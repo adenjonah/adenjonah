@@ -1,9 +1,9 @@
 <h1 align="center">Hi 👋, I'm Jonah</h1>
 <h3 align="center">a Computer Science and Political Science-Statistics double major at Columbia University</h3>
 
-- 🔭 I’m currently working on **The 2024 NASA SUITS Challenge**
+- 🔭 I’m currently working on **The 2024 NASA SUITS Challenge** and a **Poker Discord Bot**
 
-- 🌱 I’m currently learning **ReactJS and Unity**
+- 🌱 I’m currently learning **ReactJS, Unity, and Python**
 
 - 📫 Reach me at **jonah.aden@columbia.edu**
 
