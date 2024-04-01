@@ -4,6 +4,8 @@
 - 🔭 I’m currently working on **The 2024 NASA SUITS Challenge** and a **Poker Discord Bot**
 
 - 🌱 I’m currently learning **ReactJS, Unity, and Python**
+  
+- 📃 Take a look at my resume [**here**](https://adenjonah.github.io/Resume/jonahsresume.pdf)
 
 - 📫 Reach me at **jonah.aden@columbia.edu**
 
