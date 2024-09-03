@@ -1,15 +1,14 @@
-<h1 align="center">Hi 👋, I'm Jonah</h1>
-<h3 align="center">a Computer Science and Political Science-Statistics double major at Columbia University</h3>
 
-- 🔭 I’m currently working on **The 2024 NASA SUITS Challenge** and a **Poker Discord Bot**
+# Hi 👋, I'm Jonah
+### a Computer Science and Political Science-Statistics double major at Columbia University
 
-- 🌱 I’m currently learning **React and Unity**
+- 🔭 I’m currently working on **HistoryThroughArt.com**, **PurePoker.world**, and the **StatWrap Python Package**
 
-- 📫 Reach me at **jonah.aden@columbia.edu**
+- 🌱 I’m currently learning **frontend development, React, TypeScript, and data analytics for political science research**
 
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-<a href="https://linkedin.com/in/jonah-aden" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="jonah-aden" height="30" width="40" /></a>
-<a href="https://instagram.com/jonah.aden" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="jonah.aden" height="30" width="40" /></a>
-<a href="https://jonahaden.org" target="blank"><img align="center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" alt="jonah.aden" height="30" width="35" /></a> 
-</p>
+- 📫 Reach me at **adenjonah@gmail.com**
+
+### Connect with me:
+[![LinkedIn](https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg)](https://linkedin.com/in/jonah-aden)
+[![Instagram](https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg)](https://instagram.com/jonah.aden)
+[![Website](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png)](https://jonahaden.org)
