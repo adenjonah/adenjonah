@@ -1,6 +1,6 @@
 
 # Hi 👋, I'm Jonah
-### a Computer Science and Political Science-Statistics double major at Columbia University
+### a Computer Science and Statistics-Political Science double major at Columbia University
 
 - 🔭 I’m currently working on <a href="http://www.HistoryThroughArt.com" target="_blank"><b>HistoryThroughArt.com</b></a>, <a href="http://www.purepoker.world" target="_blank"><b>PurePoker.world</b></a>, and the <a href="https://pypi.org/project/StatWrap/" target="_blank"><b>StatWrap Python Package</b></a>
 
