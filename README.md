@@ -6,7 +6,7 @@
 
 - 🌱 I’m currently learning **frontend development, React, TypeScript, and data analytics for political science research**
 
-- 📫 Reach me at **adenjonah@gmail.com**
+- 📫 Reach me at **jonah.aden@columbia.edu**
 
 <!-- <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/adenjonah/adenjonah/output/github-contribution-grid-snake-dark.svg">
