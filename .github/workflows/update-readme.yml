@@ -81,9 +81,9 @@ jobs:
           echo "Top Repositories: $(cat top_repos.txt)"
           echo "::set-output name=top_repos::$(cat top_repos.txt)"
 
-      # Step 4: Update the README file
-      - name: Update README
-        id: update-readme
+      # Step 4: Generate new README content
+      - name: Generate README Content
+        id: generate-readme
         env:
           REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
@@ -108,13 +108,25 @@ jobs:
 
           # Remove leading ", " and append note
           repos_links="${repos_links:2}"
-          repos_links="$repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)"
+          echo "- 🔭 I’m currently working on $repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)" > new_readme_section.txt
 
-          sed -i "s|- 🔭 I’m currently working on.*|- 🔭 I’m currently working on $repos_links|" README.md
-
-      # Step 5: Commit and push changes
-      - name: Commit and Push Changes
+      # Step 5: Check for changes
+      - name: Check for Changes
+        id: check-changes
         run: |
+          if ! diff <(sed -n '/- 🔭 I’m currently working on/p' README.md) new_readme_section.txt > /dev/null; then
+            echo "Changes detected."
+            echo "SHOULD_COMMIT=true" >> $GITHUB_ENV
+          else
+            echo "No changes detected."
+            echo "SHOULD_COMMIT=false" >> $GITHUB_ENV
+
+      # Step 6: Update README if changes are detected
+      - name: Commit and Push Changes
+        if: env.SHOULD_COMMIT == 'true'
+        run: |
+          mv new_readme_section.txt updated_section.md
+          sed -i "/- 🔭 I’m currently working on/c$(cat updated_section.md)" README.md
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
