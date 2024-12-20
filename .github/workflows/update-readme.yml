@@ -114,12 +114,17 @@ jobs:
       - name: Check for Changes
         id: check-changes
         run: |
-          if ! diff <(sed -n '/- 🔭 I’m currently working on/p' README.md) new_readme_section.txt > /dev/null; then
+          # Extract the current section from README.md
+          sed -n '/- 🔭 I’m currently working on/p' README.md > current_readme_section.txt
+      
+          # Compare with the new section
+          if ! diff current_readme_section.txt new_readme_section.txt > /dev/null; then
             echo "Changes detected."
             echo "SHOULD_COMMIT=true" >> $GITHUB_ENV
           else
             echo "No changes detected."
             echo "SHOULD_COMMIT=false" >> $GITHUB_ENV
+          fi
 
       # Step 6: Update README if changes are detected
       - name: Commit and Push Changes
