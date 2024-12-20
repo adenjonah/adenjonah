@@ -1,0 +1,60 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: "0 0 */3 * *" # Every 3 days at midnight
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fetch Commit and PR Data
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          # Install jq for JSON parsing
+          sudo apt-get install jq -y
+          # Fetch repositories
+          repos=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/users/JonahAden/repos \
+            | jq -r '.[] | .full_name')
+
+          top_repos=$(for repo in $repos; do
+            commits=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/$repo/commits?since=$(date -d '30 days ago' +%Y-%m-%d)" \
+              | jq length)
+
+            prs=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/$repo/pulls?state=all&per_page=100" \
+              | jq '[.[] | select(.created_at >= "'$(date -d '30 days ago' +%Y-%m-%d)'")] | length')
+
+            echo "$commits $prs $repo"
+          done | sort -k1,2nr | head -n 3 | awk '{print $3}')
+
+          echo "::set-output name=top_repos::$top_repos"
+
+      - name: Update README
+        id: update-readme
+        run: |
+          top_repos="${{ steps.fetch-output.outputs.top_repos }}"
+          repos_links=""
+          for repo in $top_repos; do
+            repos_links="$repos_links, <a href=\"https://github.com/$repo\" target=\"_blank\"><b>$repo</b></a>"
+          done
+
+          # Remove leading ", " and update README
+          repos_links="${repos_links:2}"
+          sed -i "s|- 🔭 I’m currently working on.*|- 🔭 I’m currently working on $repos_links|" README.md
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Update README with top repositories"
+          git push
