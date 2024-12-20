@@ -108,7 +108,7 @@ jobs:
 
           # Remove leading ", " and append note
           repos_links="${repos_links:2}"
-          repos_links="$repos_links (This list is updated automatically based on commits and PRs, checkout the <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>code here</b></a>)"
+          repos_links="$repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)"
 
           sed -i "s|- 🔭 I’m currently working on.*|- 🔭 I’m currently working on $repos_links|" README.md
 
@@ -118,5 +118,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Update README with top repositories"
+          git commit -m "Update README with new top repositories"
           git push
