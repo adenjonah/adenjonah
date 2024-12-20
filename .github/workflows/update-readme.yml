@@ -22,11 +22,17 @@ jobs:
       - name: Load Replacement Links
         id: load-replacement-links
         run: |
+          # Verify replacement_links.json exists and is valid JSON
           if [ -f .github/config/replacement_links.json ]; then
-            jq empty .github/config/replacement_links.json || { echo "Invalid JSON format in replacement_links.json"; exit 1; }
-            REPLACEMENT_LINKS=$(cat .github/config/replacement_links.json | jq -c .)
+            if ! jq empty .github/config/replacement_links.json; then
+              echo "Invalid JSON format in replacement_links.json"
+              exit 1
+            fi
+            # Use jq directly without cat for efficiency
+            REPLACEMENT_LINKS=$(jq -c . .github/config/replacement_links.json)
             echo "REPLACEMENT_LINKS=$REPLACEMENT_LINKS" >> $GITHUB_ENV
           else
+            echo "No replacement_links.json found. Using empty object."
             echo "REPLACEMENT_LINKS={}" >> $GITHUB_ENV
           fi
 
@@ -37,17 +43,39 @@ jobs:
           IGNORE_LIST: ${{ secrets.IGNORE_LIST }}
           REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
-          # Parse ignore list from secrets
-          IFS=',' read -r -a ignore_list <<< "$IGNORE_LIST"
+          # Check if GH_TOKEN is set
+          if [ -z "$GH_TOKEN" ]; then
+            echo "GH_TOKEN not set. Cannot fetch repository data."
+            exit 1
+          fi
 
-          # Fetch all repositories (including private and collaborations)
+          # If IGNORE_LIST is empty or not set, no repos are ignored
+          if [ -z "$IGNORE_LIST" ]; then
+            echo "IGNORE_LIST is empty or not set. Proceeding without ignoring any repos."
+            ignore_list=()
+          else
+            IFS=',' read -r -a ignore_list <<< "$IGNORE_LIST"
+          fi
+
+          echo "Fetching repositories..."
           repos=$(curl -s -H "Authorization: token $GH_TOKEN" \
             https://api.github.com/user/repos?per_page=100)
 
-          echo "Fetched repositories data: $repos"
+          # Check if we got a valid response
+          if [ -z "$repos" ] || [ "$repos" = "[]" ]; then
+            echo "No repositories returned or empty response. Skipping update."
+            exit 0
+          fi
 
-          # Parse repository names and filter out ignored ones
-          parsed_repos=$(echo "$repos" | jq -r '.[] | .full_name')
+          echo "Fetched repositories data."
+          parsed_repos=$(echo "$repos" | jq -r '.[] | .full_name' 2>/dev/null)
+
+          if [ -z "$parsed_repos" ]; then
+            echo "No repository names found. Possibly no repos or API error. Skipping update."
+            exit 0
+          fi
+
+          # Filter out ignored repositories
           filtered_repos=()
           for repo in $parsed_repos; do
             if [[ ! " ${ignore_list[@]} " =~ " $repo " ]]; then
@@ -56,29 +84,38 @@ jobs:
           done
           echo "Filtered Repositories: ${filtered_repos[@]}"
 
-          # Initialize top_repos
+          # If no filtered repos, skip
+          if [ ${#filtered_repos[@]} -eq 0 ]; then
+            echo "No repositories left after filtering. Skipping update."
+            exit 0
+          fi
+
           top_repos=""
-
+          # Evaluate commits and PRs for each repo
           for repo in "${filtered_repos[@]}"; do
-            # Fetch commit count
             commits=$(curl -s -H "Authorization: token $GH_TOKEN" \
-              "https://api.github.com/repos/$repo/commits?since=$(date -d '30 days ago' +%Y-%m-%d)" \
-              | jq length)
+              "https://api.github.com/repos/$repo/commits?since=$(date -d '30 days ago' +%Y-%m-%d)" | jq length)
 
-            # Fetch PR count
             prs=$(curl -s -H "Authorization: token $GH_TOKEN" \
               "https://api.github.com/repos/$repo/pulls?state=all&per_page=100" \
               | jq '[.[] | select(.created_at >= "'$(date -d '30 days ago' +%Y-%m-%d)'")] | length')
 
             echo "Repo: $repo, Commits: $commits, PRs: $prs"
 
-            # Track repositories with activity
+            # Only echo repos that have activity
             if [[ $commits -gt 0 || $prs -gt 0 ]]; then
               echo "$commits $prs $repo"
             fi
           done | sort -k1,2nr | head -n 3 | awk '{print $3}' > top_repos.txt
 
+          if [ ! -s top_repos.txt ]; then
+            echo "No top repositories found with activity. Skipping update."
+            exit 0
+          fi
+
           echo "Top Repositories: $(cat top_repos.txt)"
+          # Using the deprecated set-output is still allowed but consider using echo "::set-output"
+          # If removed in the future, rewrite to use GITHUB_OUTPUT file.
           echo "::set-output name=top_repos::$(cat top_repos.txt)"
 
       # Step 4: Generate new README content
@@ -89,14 +126,15 @@ jobs:
         run: |
           top_repos=$(cat top_repos.txt)
           if [[ -z "$top_repos" ]]; then
-            echo "No repositories with activity in the last 30 days. Skipping update."
+            echo "No repositories with activity. Skipping update."
             exit 0
           fi
 
           repos_links=""
+          # Build the link list
           while IFS= read -r repo; do
-            repo_name=$(basename "$repo") # Extract the repo name only
-            # Check if repo is in the replacement dictionary
+            repo_name=$(basename "$repo")
+            # Check dictionary for a custom link
             if jq -e --arg repo_name "$repo_name" '.[$repo_name]' <<< "$REPLACEMENT_LINKS" > /dev/null; then
               display_name=$(jq -r --arg repo_name "$repo_name" '.[$repo_name].display_name' <<< "$REPLACEMENT_LINKS")
               link=$(jq -r --arg repo_name "$repo_name" '.[$repo_name].link' <<< "$REPLACEMENT_LINKS")
@@ -106,7 +144,7 @@ jobs:
             fi
           done <<< "$top_repos"
 
-          # Remove leading ", " and append note
+          # Remove leading comma and space
           repos_links="${repos_links:2}"
           echo "- 🔭 I’m currently working on $repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)" > new_readme_section.txt
 
@@ -114,10 +152,10 @@ jobs:
       - name: Check for Changes
         id: check-changes
         run: |
-          # Extract the current section from README.md
+          # Extract current section from README
           sed -n '/- 🔭 I’m currently working on/p' README.md > current_readme_section.txt
-      
-          # Compare with the new section
+
+          # Compare current vs new
           if ! diff current_readme_section.txt new_readme_section.txt > /dev/null; then
             echo "Changes detected."
             echo "SHOULD_COMMIT=true" >> $GITHUB_ENV
@@ -131,6 +169,7 @@ jobs:
         if: env.SHOULD_COMMIT == 'true'
         run: |
           mv new_readme_section.txt updated_section.md
+          # Update README inline
           sed -i "/- 🔭 I’m currently working on/c$(cat updated_section.md)" README.md
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
