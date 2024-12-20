@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install jq -y
           # Fetch repositories
           repos=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-            https://api.github.com/users/JonahAden/repos \
+            https://api.github.com/users/adenjonah/repos \
             | jq -r '.[] | .full_name')
 
           top_repos=$(for repo in $repos; do
