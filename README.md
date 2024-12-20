@@ -2,7 +2,7 @@
 # Hi 👋, I'm Jonah
 ### a Computer Science and Statistics-Political Science double major at Columbia University
 
-- 🔭 I’m currently working on <a href="https://github.com/Pure-Poker-Inc/pure-poker" target="_blank"><b>Pure-Poker-Inc/pure-poker</b></a>, <a href="https://github.com/adenjonah/HistoryThroughArt.com" target="_blank"><b>adenjonah/HistoryThroughArt.com</b></a>, <a href="https://github.com/adenjonah/adenjonah" target="_blank"><b>adenjonah/adenjonah</b></a>
+- 🔭 I’m currently working on <a href="https://github.com/Pure-Poker-Inc/pure-poker" target="_blank"><b>pure-poker</b></a>, <a href="https://github.com/adenjonah/HistoryThroughArt.com" target="_blank"><b>HistoryThroughArt.com</b></a>, <a href="https://github.com/adenjonah/Chinese-Materials" target="_blank"><b>Chinese-Materials</b></a> (This list is updated automatically based on commits and PRs, checkout the <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>code here</b></a>)
 
 - 🌱 I’m currently learning **frontend development, React, TypeScript, and data analytics for political science research**
 
