@@ -34,10 +34,11 @@ jobs:
       - name: Fetch Commit and PR Data
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          IGNORE_LIST: ${{ secrets.IGNORE_LIST }}
           REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
-          # Define the ignore list as an array
-          ignore_list=("adenjonah/adenjonah")
+          # Parse ignore list from secrets
+          IFS=',' read -r -a ignore_list <<< "$IGNORE_LIST"
 
           # Fetch all repositories (including private and collaborations)
           repos=$(curl -s -H "Authorization: token $GH_TOKEN" \
