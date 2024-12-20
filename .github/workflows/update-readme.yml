@@ -18,19 +18,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Fetch replacement dictionary
+      # Step 2: Load and validate the replacement dictionary
       - name: Load Replacement Links
         id: load-replacement-links
         run: |
           if [ -f .github/config/replacement_links.json ]; then
-            cat .github/config/replacement_links.json
+            jq empty .github/config/replacement_links.json || { echo "Invalid JSON format in replacement_links.json"; exit 1; }
+            REPLACEMENT_LINKS=$(cat .github/config/replacement_links.json | jq -c .)
+            echo "REPLACEMENT_LINKS=$REPLACEMENT_LINKS" >> $GITHUB_ENV
           else
-            echo "{}" > replacement_links.json
+            echo "REPLACEMENT_LINKS={}" >> $GITHUB_ENV
           fi
-        shell: bash
-      - name: Set Replacement Links
-        id: set-replacement-links
-        run: echo "REPLACEMENT_LINKS=$(cat .github/config/replacement_links.json)" >> $GITHUB_ENV
 
       # Step 3: Fetch top repositories based on commits and PRs
       - name: Fetch Commit and PR Data
