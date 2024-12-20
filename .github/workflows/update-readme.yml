@@ -5,7 +5,8 @@ on:
     - cron: "0 0 */3 * *" # Every 3 days at midnight
   push:
     paths:
-      - .github/workflows/update-readme.yml # Trigger when this file is updated
+      - .github/workflows/update-readme.yml
+      - .github/config/replacement_links.json
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -17,10 +18,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Fetch top repositories based on commits and PRs
+      # Step 2: Fetch replacement dictionary
+      - name: Load Replacement Links
+        id: load-replacement-links
+        run: |
+          if [ -f .github/config/replacement_links.json ]; then
+            cat .github/config/replacement_links.json
+          else
+            echo "{}" > replacement_links.json
+          fi
+        shell: bash
+      - name: Set Replacement Links
+        id: set-replacement-links
+        run: echo "REPLACEMENT_LINKS=$(cat .github/config/replacement_links.json)" >> $GITHUB_ENV
+
+      # Step 3: Fetch top repositories based on commits and PRs
       - name: Fetch Commit and PR Data
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
           # Define the ignore list as an array
           ignore_list=("adenjonah/adenjonah")
@@ -66,9 +82,11 @@ jobs:
           echo "Top Repositories: $(cat top_repos.txt)"
           echo "::set-output name=top_repos::$(cat top_repos.txt)"
 
-      # Step 3: Update the README file
+      # Step 4: Update the README file
       - name: Update README
         id: update-readme
+        env:
+          REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
           top_repos=$(cat top_repos.txt)
           if [[ -z "$top_repos" ]]; then
@@ -79,7 +97,14 @@ jobs:
           repos_links=""
           while IFS= read -r repo; do
             repo_name=$(basename "$repo") # Extract the repo name only
-            repos_links="$repos_links, <a href=\"https://github.com/$repo\" target=\"_blank\"><b>$repo_name</b></a>"
+            # Check if repo is in the replacement dictionary
+            if jq -e --arg repo_name "$repo_name" '.[$repo_name]' <<< "$REPLACEMENT_LINKS" > /dev/null; then
+              display_name=$(jq -r --arg repo_name "$repo_name" '.[$repo_name].display_name' <<< "$REPLACEMENT_LINKS")
+              link=$(jq -r --arg repo_name "$repo_name" '.[$repo_name].link' <<< "$REPLACEMENT_LINKS")
+              repos_links="$repos_links, <a href=\"$link\" target=\"_blank\"><b>$display_name</b></a>"
+            else
+              repos_links="$repos_links, <a href=\"https://github.com/$repo\" target=\"_blank\"><b>$repo_name</b></a>"
+            fi
           done <<< "$top_repos"
 
           # Remove leading ", " and append note
@@ -88,7 +113,7 @@ jobs:
 
           sed -i "s|- 🔭 I’m currently working on.*|- 🔭 I’m currently working on $repos_links|" README.md
 
-      # Step 4: Commit and push changes
+      # Step 5: Commit and push changes
       - name: Commit and Push Changes
         run: |
           git config user.name "github-actions[bot]"
