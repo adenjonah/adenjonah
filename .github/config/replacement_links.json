@@ -1,0 +1,10 @@
+{
+  "pure-poker": {
+    "display_name": "Pure Poker",
+    "link": "https://www.purepoker.world"
+  },
+  "another-private-repo": {
+    "display_name": "Custom Repo Name",
+    "link": "https://custom-link.example"
+  }
+}
