@@ -1,55 +1,75 @@
+# Overview
+# This GitHub Actions workflow automates the process of updating a README file 
+# with the most active repositories in the past 30 days.
+
+# 1. Triggering Events:
+#    - Scheduled to run daily at midnight.
+#    - Manually triggered in Actions.
+#    - Triggered on updates to workflow files in the repository.
+
+# 3. Workflow Steps:
+#    - Checkout adenjonah/adenjonah Repository: Clones the repository to the runner.
+#    - Load Replacement Links for repos where I want to link a production site rather than the repo:
+#      - Reads and validates a JSON file for display name and link replacements for repositories.
+#      - Sets the environment variable `REPLACEMENT_LINKS` which protects from the private repos being seen.
+#    - Fetch Commit and PR Data:
+#      - Fetches repositories using the GitHub API.
+#      - Filters out ignored repositories from a provided list.
+#      - Retrieves recent commits and pull requests for each repository to assess activity.
+#      - Identifies the top three repositories based on activity and saves their names to a file.
+#    - Generate README Content:
+#      - Builds a section with links to the top repositories, using replacement links if specified.
+#      - Generates an updated README section with HTML links to repositories.
+#    - Check for Changes:
+#      - Compares the newly generated README section with the existing one to detect updates.
+#    - Commit and Push Changes:
+#      - If changes are detected, updates the README file, commits the changes, and pushes them to the repository.
+
 name: Update README
 
 on:
   schedule:
-    - cron: "0 0 */3 * *" # Every 3 days at midnight
+    - cron: "0 0 * * *"
   push:
     paths:
       - .github/workflows/update-readme.yml
       - .github/config/replacement_links.json
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Load and validate the replacement dictionary
       - name: Load Replacement Links
         id: load-replacement-links
         run: |
-          # Verify replacement_links.json exists and is valid JSON
           if [ -f .github/config/replacement_links.json ]; then
             if ! jq empty .github/config/replacement_links.json; then
               echo "Invalid JSON format in replacement_links.json"
               exit 1
             fi
-            # Use jq directly without cat for efficiency
             REPLACEMENT_LINKS=$(jq -c . .github/config/replacement_links.json)
             echo "REPLACEMENT_LINKS=$REPLACEMENT_LINKS" >> $GITHUB_ENV
           else
             echo "No replacement_links.json found. Using empty object."
             echo "REPLACEMENT_LINKS={}" >> $GITHUB_ENV
           fi
-
-      # Step 3: Fetch top repositories based on commits and PRs
+          
       - name: Fetch Commit and PR Data
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           IGNORE_LIST: ${{ secrets.IGNORE_LIST }}
           REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
-          # Check if GH_TOKEN is set
           if [ -z "$GH_TOKEN" ]; then
             echo "GH_TOKEN not set. Cannot fetch repository data."
             exit 1
           fi
 
-          # If IGNORE_LIST is empty or not set, no repos are ignored
           if [ -z "$IGNORE_LIST" ]; then
             echo "IGNORE_LIST is empty or not set. Proceeding without ignoring any repos."
             ignore_list=()
@@ -61,7 +81,6 @@ jobs:
           repos=$(curl -s -H "Authorization: token $GH_TOKEN" \
             https://api.github.com/user/repos?per_page=100)
 
-          # Check if we got a valid response
           if [ -z "$repos" ] || [ "$repos" = "[]" ]; then
             echo "No repositories returned or empty response. Skipping update."
             exit 0
@@ -75,7 +94,6 @@ jobs:
             exit 0
           fi
 
-          # Filter out ignored repositories
           filtered_repos=()
           for repo in $parsed_repos; do
             if [[ ! " ${ignore_list[@]} " =~ " $repo " ]]; then
@@ -84,14 +102,12 @@ jobs:
           done
           echo "Filtered Repositories: ${filtered_repos[@]}"
 
-          # If no filtered repos, skip
           if [ ${#filtered_repos[@]} -eq 0 ]; then
             echo "No repositories left after filtering. Skipping update."
             exit 0
           fi
 
           top_repos=""
-          # Evaluate commits and PRs for each repo
           for repo in "${filtered_repos[@]}"; do
             commits=$(curl -s -H "Authorization: token $GH_TOKEN" \
               "https://api.github.com/repos/$repo/commits?since=$(date -d '30 days ago' +%Y-%m-%d)" | jq length)
@@ -102,7 +118,6 @@ jobs:
 
             echo "Repo: $repo, Commits: $commits, PRs: $prs"
 
-            # Only echo repos that have activity
             if [[ $commits -gt 0 || $prs -gt 0 ]]; then
               echo "$commits $prs $repo"
             fi
@@ -114,11 +129,8 @@ jobs:
           fi
 
           echo "Top Repositories: $(cat top_repos.txt)"
-          # Using the deprecated set-output is still allowed but consider using echo "::set-output"
-          # If removed in the future, rewrite to use GITHUB_OUTPUT file.
           echo "::set-output name=top_repos::$(cat top_repos.txt)"
 
-      # Step 4: Generate new README content
       - name: Generate README Content
         id: generate-readme
         env:
@@ -131,10 +143,8 @@ jobs:
           fi
 
           repos_links=""
-          # Build the link list
           while IFS= read -r repo; do
             repo_name=$(basename "$repo")
-            # Check dictionary for a custom link
             if jq -e --arg repo_name "$repo_name" '.[$repo_name]' <<< "$REPLACEMENT_LINKS" > /dev/null; then
               display_name=$(jq -r --arg repo_name "$repo_name" '.[$repo_name].display_name' <<< "$REPLACEMENT_LINKS")
               link=$(jq -r --arg repo_name "$repo_name" '.[$repo_name].link' <<< "$REPLACEMENT_LINKS")
@@ -144,18 +154,14 @@ jobs:
             fi
           done <<< "$top_repos"
 
-          # Remove leading comma and space
           repos_links="${repos_links:2}"
           echo "- 🔭 I’m currently working on $repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)" > new_readme_section.txt
 
-      # Step 5: Check for changes
       - name: Check for Changes
         id: check-changes
         run: |
-          # Extract current section from README
           sed -n '/- 🔭 I’m currently working on/p' README.md > current_readme_section.txt
 
-          # Compare current vs new
           if ! diff current_readme_section.txt new_readme_section.txt > /dev/null; then
             echo "Changes detected."
             echo "SHOULD_COMMIT=true" >> $GITHUB_ENV
@@ -164,7 +170,6 @@ jobs:
             echo "SHOULD_COMMIT=false" >> $GITHUB_ENV
           fi
 
-      # Step 6: Update README if changes are detected
       - name: Commit and Push Changes
         if: env.SHOULD_COMMIT == 'true'
         run: |
