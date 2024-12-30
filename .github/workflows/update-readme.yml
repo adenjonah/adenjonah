@@ -7,7 +7,7 @@
 #    - Manually triggered in Actions.
 #    - Triggered on updates to workflow files in the repository.
 
-# 3. Workflow Steps:
+# 2. Workflow Steps:
 #    - Checkout adenjonah/adenjonah Repository: Clones the repository to the runner.
 #    - Load Replacement Links for repos where I want to link a production site rather than the repo:
 #      - Reads and validates a JSON file for display name and link replacements for repositories.
@@ -58,7 +58,7 @@ jobs:
             echo "No replacement_links.json found. Using empty object."
             echo "REPLACEMENT_LINKS={}" >> $GITHUB_ENV
           fi
-          
+
       - name: Fetch Commit and PR Data
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -86,13 +86,7 @@ jobs:
             exit 0
           fi
 
-          echo "Fetched repositories data."
           parsed_repos=$(echo "$repos" | jq -r '.[] | .full_name' 2>/dev/null)
-
-          if [ -z "$parsed_repos" ]; then
-            echo "No repository names found. Possibly no repos or API error. Skipping update."
-            exit 0
-          fi
 
           filtered_repos=()
           for repo in $parsed_repos; do
@@ -100,7 +94,6 @@ jobs:
               filtered_repos+=("$repo")
             fi
           done
-          echo "Filtered Repositories: ${filtered_repos[@]}"
 
           if [ ${#filtered_repos[@]} -eq 0 ]; then
             echo "No repositories left after filtering. Skipping update."
@@ -116,8 +109,6 @@ jobs:
               "https://api.github.com/repos/$repo/pulls?state=all&per_page=100" \
               | jq '[.[] | select(.created_at >= "'$(date -d '30 days ago' +%Y-%m-%d)'")] | length')
 
-            echo "Repo: $repo, Commits: $commits, PRs: $prs"
-
             if [[ $commits -gt 0 || $prs -gt 0 ]]; then
               echo "$commits $prs $repo"
             fi
@@ -128,15 +119,15 @@ jobs:
             exit 0
           fi
 
-          echo "Top Repositories: $(cat top_repos.txt)"
-          echo "top_repos=$(cat top_repos.txt)" >> $GITHUB_ENV
+          top_repos=$(paste -sd, top_repos.txt)
+          echo "top_repos=$top_repos" >> $GITHUB_ENV
 
       - name: Generate README Content
         id: generate-readme
         env:
           REPLACEMENT_LINKS: ${{ env.REPLACEMENT_LINKS }}
         run: |
-          top_repos=$(cat top_repos.txt)
+          top_repos=$(echo "${{ env.top_repos }}" | tr ',' '\n')
           if [[ -z "$top_repos" ]]; then
             echo "No repositories with activity. Skipping update."
             exit 0
@@ -173,9 +164,7 @@ jobs:
       - name: Commit and Push Changes
         if: env.SHOULD_COMMIT == 'true'
         run: |
-          mv new_readme_section.txt updated_section.md
-          # Update README inline
-          sed -i "/- 🔭 I’m currently working on/c$(cat updated_section.md)" README.md
+          sed -i "/- 🔭 I’m currently working on/c$(cat new_readme_section.txt)" README.md
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
