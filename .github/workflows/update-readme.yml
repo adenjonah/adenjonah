@@ -129,7 +129,7 @@ jobs:
           fi
 
           echo "Top Repositories: $(cat top_repos.txt)"
-          echo "::set-output name=top_repos::$(cat top_repos.txt)"
+          echo "top_repos=$(cat top_repos.txt)" >> $GITHUB_ENV
 
       - name: Generate README Content
         id: generate-readme
