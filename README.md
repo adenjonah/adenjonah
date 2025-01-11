@@ -4,7 +4,7 @@
 
 - 🔭 I’m currently working on <a href="https://www.purepoker.world" target="_blank"><b>Pure Poker</b></a>, <a href="https://github.com/adenjonah/ScreenshotBot" target="_blank"><b>ScreenshotBot</b></a>, <a href="https://github.com/adenjonah/TicketMasterBot" target="_blank"><b>TicketMasterBot</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
-- 🌱 I’m currently learning **frontend development, React, TypeScript, and data analytics for political science research**
+- 🌱 I’m currently learning **Blockchain Technologies, Cryptography, Natrual Language Processing, and Artificial Intellegence**
 
 - 📫 Reach me at **jonah.aden@columbia.edu**
 
