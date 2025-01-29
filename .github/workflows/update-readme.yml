@@ -1,6 +1,7 @@
 # Overview
 # This GitHub Actions workflow automates the process of updating a README file 
 # with the most active repositories in the past 30 days.
+# This ranking is based on commits/PRs/comments etc, not LOC, so results may not reflect time spent
 
 # 1. Triggering Events:
 #    - Scheduled to run daily at midnight.
