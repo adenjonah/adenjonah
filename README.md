@@ -2,7 +2,7 @@
 # Hi 👋, I'm Jonah
 ### a Computer Science and Statistics-Political Science double major at Columbia University
 
-- 🔭 I’m currently working on <a href="https://github.com/adenjonah/RunRarity" target="_blank"><b>RunRarity</b></a>, <a href="https://github.com/adenjonah/HistoryThroughArt.com" target="_blank"><b>HistoryThroughArt.com</b></a>, <a href="https://github.com/adenjonah/ScreenshotBot" target="_blank"><b>ScreenshotBot</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- 🔭 I’m currently working on <a href="https://github.com/adenjonah/RunRarity" target="_blank"><b>RunRarity</b></a>, <a href="https://github.com/ryanson14/Valentines" target="_blank"><b>Valentines</b></a>, <a href="https://github.com/adenjonah/columbia-poker-club" target="_blank"><b>columbia-poker-club</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
 - 🌱 I’m currently learning **Blockchain Technologies, Cryptography, Natrual Language Processing, and Artificial Intellegence**
 
