@@ -2,7 +2,7 @@
 # Hi 👋, I'm Jonah
 ### a Computer Science and Statistics-Political Science double major at Columbia University
 
-- 🔭 I’m currently working on <a href="https://github.com/adenjonah/adenjonah" target="_blank"><b>adenjonah</b></a>, <a href="https://github.com/adenjonah/Science-of-Blockchain" target="_blank"><b>Science-of-Blockchain</b></a>, <a href="https://github.com/adenjonah/AI-S25" target="_blank"><b>AI-S25</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- 🔭 I’m currently working on <a href="https://github.com/adenjonah/TicketMasterBot" target="_blank"><b>TicketMasterBot</b></a>, <a href="https://github.com/adenjonah/adenjonah" target="_blank"><b>adenjonah</b></a>, <a href="https://github.com/adenjonah/Queue-Bot" target="_blank"><b>Queue-Bot</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
 - 🌱 I’m currently learning **Blockchain Technologies, Cryptography, Natrual Language Processing, and Artificial Intellegence**
 
