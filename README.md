@@ -2,7 +2,7 @@
 # Hi 👋, I'm Jonah
 ### a Computer Science and Statistics-Political Science double major at Columbia University
 
-- 🔭 I’m currently working on <a href="https://github.com/de2425c/stack_poker" target="_blank"><b>stack_poker</b></a>, <a href="https://github.com/alexanderthclark/statwrap" target="_blank"><b>statwrap</b></a>, <a href="https://columbiapoker.club" target="_blank"><b>Columbia Poker Club</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- 🔭 I’m currently working on <a href="https://github.com/de2425c/stack_poker" target="_blank"><b>stack_poker</b></a>, <a href="https://github.com/alexanderthclark/statwrap" target="_blank"><b>statwrap</b></a>, <a href="https://github.com/adenjonah/doomsday-practice" target="_blank"><b>doomsday-practice</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
 - 🌱 I’m currently learning **Blockchain Technologies, Cryptography, Natrual Language Processing, and Artificial Intellegence**
 
