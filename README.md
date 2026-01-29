@@ -2,7 +2,7 @@
 # Hi 👋, I'm Jonah
 ### a Computer Science and Statistics-Political Science double major at Columbia University
 
-- 🔭 I’m currently working on <a href="https://github.com/adenjonah/ClubGG" target="_blank"><b>ClubGG</b></a>, <a href="https://github.com/adenjonah/bettr-app" target="_blank"><b>bettr-app</b></a>, <a href="https://github.com/adenjonah/HistoryThroughArt.com" target="_blank"><b>HistoryThroughArt.com</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- 🔭 I’m currently working on <a href="https://github.com/adenjonah/ClubGG" target="_blank"><b>ClubGG</b></a>, <a href="https://github.com/adenjonah/HistoryThroughArt.com" target="_blank"><b>HistoryThroughArt.com</b></a>, <a href="https://github.com/adenjonah/bettr-app" target="_blank"><b>bettr-app</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
 - 🌱 I’m currently learning **Blockchain Technologies, Cryptography, Natrual Language Processing, and Artificial Intellegence**
 
