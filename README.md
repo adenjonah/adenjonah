@@ -1,14 +1,14 @@
 
 # Hi 👋, I'm Jonah
-### a Computer Science and Statistics-Political Science double major at Columbia University
+### Computer Science and Statistics-Political Science student at Columbia University
 
-- 🔭 I’m currently working on <a href="https://github.com/adenjonah/BroadwayWebDev" target="_blank"><b>BroadwayWebDev</b></a>, <a href="https://github.com/adenjonah/bettr-help-planning" target="_blank"><b>bettr-help-planning</b></a>, <a href="https://github.com/adenjonah/notes" target="_blank"><b>notes</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- 🔭 I'm currently working on <a href="https://github.com/adenjonah/BroadwayWebDev" target="_blank"><b>BroadwayWebDev</b></a>, <a href="https://github.com/adenjonah/bettr-help-planning" target="_blank"><b>bettr-help-planning</b></a>, <a href="https://github.com/adenjonah/notes" target="_blank"><b>notes</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
-- 🌱 I’m currently learning **Blockchain Technologies, Cryptography, Natrual Language Processing, and Artificial Intellegence**
+- 🌱 I'm currently building **full-stack web apps and AI-native tools** with TypeScript, Next.js, Python/FastAPI, Supabase, and the OpenAI API
 
-- 💸 I do Freelance development with extensive experience building **User Interfaces in React, Discord Bots, and Automation using LLMs**, if you have something you need built reach me at **adenjonah@gmail.com**
+- 💸 I do freelance development — **full-stack web apps, AI integrations, Telegram bots, and scraping tools** — reach me at **adenjonah@gmail.com**
 
-- 📫 I am currently looking for an internship for the Summer of 2025, if you are hiring or know someone who is, reach me at **jonah.aden@columbia.edu**!
+- 🌐 Portfolio at **[jonahaden.org](https://jonahaden.org)**
 
 ### Connect with me:
 <a href="https://linkedin.com/in/jonah-aden" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="jonah-aden" height="30" width="40" /></a>
