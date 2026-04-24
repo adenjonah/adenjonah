@@ -147,12 +147,12 @@ jobs:
           done <<< "$top_repos"
 
           repos_links="${repos_links:2}"
-          echo "- 🔭 I’m currently working on $repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)" > new_readme_section.txt
+          echo "- I’m currently working on $repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)" > new_readme_section.txt
 
       - name: Check for Changes
         id: check-changes
         run: |
-          sed -n '/- 🔭 I’m currently working on/p' README.md > current_readme_section.txt
+          sed -n "/- I’m currently working on/p" README.md > current_readme_section.txt
 
           if ! diff current_readme_section.txt new_readme_section.txt > /dev/null; then
             echo "Changes detected."
@@ -165,7 +165,7 @@ jobs:
       - name: Commit and Push Changes
         if: env.SHOULD_COMMIT == 'true'
         run: |
-          sed -i "/- 🔭 I’m currently working on/c$(cat new_readme_section.txt)" README.md
+          sed -i "/- I’m currently working on/c$(cat new_readme_section.txt)" README.md
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md

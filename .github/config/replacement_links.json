@@ -10,5 +10,13 @@
   "columbia-poker-club": {
     "display_name": "Columbia Poker Club",
     "link": "https://columbiapoker.club"
+  },
+  "voices-of-history": {
+    "display_name": "Voices of History",
+    "link": "https://computahdebateme.com"
+  },
+  "BroadwayWebDev": {
+    "display_name": "Broadway Web Dev",
+    "link": "https://broadwaywebsites.com"
   }
 }
