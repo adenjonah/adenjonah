@@ -149,25 +149,13 @@ jobs:
           repos_links="${repos_links:2}"
           echo "- I’m currently working on $repos_links (Updated automatically, checkout the code <a href=\"https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml\" target=\"_blank\"><b>here</b></a>)" > new_readme_section.txt
 
-      - name: Check for Changes
-        id: check-changes
-        run: |
-          sed -n "/- I’m currently working on/p" README.md > current_readme_section.txt
-
-          if ! diff current_readme_section.txt new_readme_section.txt > /dev/null; then
-            echo "Changes detected."
-            echo "SHOULD_COMMIT=true" >> $GITHUB_ENV
-          else
-            echo "No changes detected."
-            echo "SHOULD_COMMIT=false" >> $GITHUB_ENV
-          fi
-
       - name: Commit and Push Changes
-        if: ${{ env.SHOULD_COMMIT == ‘true’ }}
         run: |
           python3 -c "c=open(‘README.md’).read();n=open(‘new_readme_section.txt’).read().strip();ls=[n if ‘currently working on’ in l else l for l in c.split(‘\n’)];open(‘README.md’,’w’).write(‘\n’.join(ls))"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Update README with new top repositories"
-          git push
+          if ! git diff --staged --quiet; then
+            git commit -m "Update README with new top repositories"
+            git push
+          fi
