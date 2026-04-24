@@ -163,9 +163,16 @@ jobs:
           fi
 
       - name: Commit and Push Changes
-        if: env.SHOULD_COMMIT == 'true'
+        if: env.SHOULD_COMMIT == ‘true’
         run: |
-          sed -i "/- I’m currently working on/c$(cat new_readme_section.txt)" README.md
+          python3 - <<’PYEOF’
+import sys
+new_line = open(‘new_readme_section.txt’).read().strip()
+content = open(‘README.md’).read()
+lines = content.split(‘\n’)
+lines = [new_line if line.startswith("- I’m currently working on") else line for line in lines]
+open(‘README.md’, ‘w’).write(‘\n’.join(lines))
+PYEOF
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
