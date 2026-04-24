@@ -157,5 +157,6 @@ jobs:
           git add README.md
           if ! git diff --staged --quiet; then
             git commit -m "Update README with new top repositories"
+            git pull --rebase origin main
             git push
           fi
