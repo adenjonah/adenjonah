@@ -2,7 +2,7 @@
 
 Computer Science and Statistics-Political Science student at Columbia University.
 
-- I'm currently working on <a href="https://github.com/adenjonah/ElmStoch" target="_blank"><b>ElmStoch</b></a>, <a href="https://github.com/adenjonah/Resume" target="_blank"><b>Resume</b></a>, <a href="https://github.com/adenjonah/adenjonah" target="_blank"><b>adenjonah</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- I'm currently working on <a href="https://github.com/adenjonah/ElmStoch" target="_blank"><b>ElmStoch</b></a>, <a href="https://github.com/adenjonah/Resume" target="_blank"><b>Resume</b></a>, <a href="https://github.com/adenjonah/StatInference" target="_blank"><b>StatInference</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
 - Building full-stack web apps and AI-native tools with TypeScript, Next.js, Python/FastAPI, Supabase, and the OpenAI API
 
