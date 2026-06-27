@@ -2,7 +2,7 @@
 
 Computer Science and Statistics-Political Science student at Columbia University.
 
-- I'm currently working on <a href="https://github.com/adenjonah/HistoryThroughArt.com" target="_blank"><b>HistoryThroughArt.com</b></a>, <a href="https://github.com/adenjonah/claude-bus" target="_blank"><b>claude-bus</b></a>, <a href="https://github.com/adenjonah/ClubGG" target="_blank"><b>ClubGG</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
+- I'm currently working on <a href="https://github.com/adenjonah/claude-bus" target="_blank"><b>claude-bus</b></a>, <a href="https://github.com/adenjonah/ClubGG" target="_blank"><b>ClubGG</b></a>, <a href="https://github.com/adenjonah/personal-assistant" target="_blank"><b>personal-assistant</b></a> (Updated automatically, checkout the code <a href="https://github.com/adenjonah/adenjonah/blob/main/.github/workflows/update-readme.yml" target="_blank"><b>here</b></a>)
 
 - Building full-stack web apps and AI-native tools with TypeScript, Next.js, Python/FastAPI, Supabase, and the OpenAI API
 
