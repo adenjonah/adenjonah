@@ -6,7 +6,7 @@ I am a full stack engineer, and I like owning a product end to end, from the dat
 
 A few things I have built:
 - Real time multiplayer poker at a startup, with live WebSocket state sync, full game logic, and a DALL-E avatar system that held a consistent style across hundreds of generations.
-- A live events pipeline that detects and stores over 80,000 events, load balanced across multiple servers at around 600ms notification latency.
+- A live events pipeline that detects and stores over 100,000 events, load balanced across multiple servers at around 600ms notification latency.
 - AR software for NASA's SUITS challenge that our Columbia team tested at Johnson Space Center.
 - A retrieval and live voice system that lets you talk to historical figures, grounded in primary sources (what I am building now).
   
